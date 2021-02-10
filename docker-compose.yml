@@ -1,14 +1,27 @@
 version: "3.9"
 services:
-  web:
-    build: .
+  frontend:
+    build: ./frontend/
     volumes:
-      - .:/usr/src
+      - ./frontend:/usr/src
     ports:
       - 9005:9005
       - 3000:3000
     user: $USER
     command: >
       bash -c "npm install && npm run start"
+    stdin_open: true
+    tty: true
+    depends_on:
+      - "backend"
+  backend:
+    build: ./backend/
+    volumes:
+      - ./backend:/usr/src
+    ports:
+      - 8000:8000
+    user: $USER
+    command: >
+      bash -c "python loopclub/manage.py runserver 0.0.0.0:8000"
     stdin_open: true
     tty: true
