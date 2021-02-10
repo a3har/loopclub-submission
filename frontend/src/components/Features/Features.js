@@ -18,14 +18,21 @@ function Features() {
       api
         .createSubscription(email)
         .then((response) => {
-          setLoading(false);
-          toastr.success("Successfully subscribed");
+          setTimeout(() => {
+            setEmail("");
+            setLoading(false);
+            if (response.data.status) toastr.success("Successfully subscribed");
+            else toastr.info(response.data.message);
+          }, 2000);
         })
         .catch((error) => {
-          setLoading(false);
-          toastr.error("There was an error while subscribing");
+          setTimeout(() => {
+            setLoading(false);
+            // console.log(error.response.data.email[0]);
+            // console.log(error.response);
+            toastr.error("There was an error. Please try again later");
+          }, 2000);
         });
-      setEmail("");
     } else {
       toastr.info("Invalid email");
     }
@@ -35,9 +42,9 @@ function Features() {
       <div className="bg-gray-50">
         <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
           <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-            <span className="block">Ready to dive in?</span>
+            <span className="block">Want to know more?</span>
             <span className="block text-indigo-600">
-              Start your free trial today.
+              Subscribe to our newsletter today.
             </span>
           </h2>
           <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
@@ -57,12 +64,12 @@ function Features() {
                 onClick={submit}
                 className="inline-flex items-center justify-center px-5 py-3 focus:outline-none border border-transparent text-base font-medium rounded-md bg-indigo-600 text-white hover:bg-indigo-500"
               >
-                {!loading ? (
-                  <img src={spinner} className="h-4 w-4" />
-                ) : (
-                  "Subscribe"
-                )}
+                Subscribe
               </button>
+            </div>
+
+            <div className="ml-1 w-12">
+              {loading ? <img src={spinner} className="" alt="" /> : ""}
             </div>
           </div>
         </div>

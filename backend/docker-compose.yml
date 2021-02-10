@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  backend:
+    build: .
+    volumes:
+      - .:/usr/src
+    ports:
+      - 8000:8000
+    user: $USER
+    command: >
+      bash -c "python loopclub/manage.py runserver 0.0.0.0:8000"
+    stdin_open: true
+    tty: true
