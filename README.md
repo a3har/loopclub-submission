@@ -5,11 +5,11 @@
 Run `docker-compose up` for a dev server.  
 Backend : `http://localhost:8000/`  
 Frontend : `http://localhost:3000/`  
-Make sure you `export USER=$(id -u)` before running docker-compose or add it to `.bashrc` so you dont have to export it everytime.  
+Make sure you `export USER=$(id -u)` before running docker-compose or add it to `.bashrc` so you dont have to export it everytime.
 
 ## API Endpoints
 
-- List All: `/subscription-list` 
+- List All: `/subscription-list`
 - Detailed View: `/subscription-detail/<str:pk>/`
 - Create : `/subscription-create`
 - Update : `/subscription-update`

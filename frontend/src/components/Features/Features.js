@@ -7,34 +7,46 @@ import "toastr/build/toastr.css";
 import spinner from "../../assets/spinner.gif";
 function Features() {
   const [email, setEmail] = useState("");
+  const [age, setAge] = useState("");
   const [loading, setLoading] = useState(false);
   const handleEmailChange = (event) => {
     event.preventDefault();
     setEmail(event.target.value);
   };
+  const handleAgeChange = (event) => {
+    event.preventDefault();
+    setAge(event.target.value);
+  };
   const submit = () => {
-    if (validator.isEmail(email)) {
+    if (validator.isEmail(email) && validator.isInt(age) && age > 0) {
       setLoading(true);
       api
-        .createSubscription(email)
+        .createSubscription(email, age)
         .then((response) => {
           setTimeout(() => {
             setEmail("");
+            setAge("");
+            console.log(response);
             setLoading(false);
             if (response.data.status) toastr.success("Successfully subscribed");
-            else toastr.info(response.data.message);
-          }, 2000);
+            else {
+              console.log(response.data.message);
+              toastr.info(response.data.message);
+            }
+          }, 5);
         })
         .catch((error) => {
           setTimeout(() => {
             setLoading(false);
             // console.log(error.response.data.email[0]);
-            // console.log(error.response);
+            console.log(error.response);
             toastr.error("There was an error. Please try again later");
           }, 2000);
         });
+    } else if (!validator.isInt(age) || age <= 0) {
+      toastr.info("Invalid age.");
     } else {
-      toastr.info("Invalid email");
+      toastr.info("Invaid email. Please enter a valid email");
     }
   };
   return (
@@ -47,8 +59,19 @@ function Features() {
               Subscribe to our newsletter today.
             </span>
           </h2>
-          <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
-            <div className="inline-flex rounded-md shadow">
+          <div className="mt-8 flex flex-col lg:mt-0 lg:flex-shrink-0">
+            <div className="rounded-md shadow">
+              <input
+                type="number"
+                value={age}
+                placeholder="Age"
+                onChange={(e) => {
+                  handleAgeChange(e);
+                }}
+                className="w-full items-center justify-center px-5 py-3 border focus:outline-none border-transparent text-base font-medium rounded-md text-gray-400 bg-white"
+              />
+            </div>
+            <div className="mt-3 rounded-md shadow">
               <input
                 type="text"
                 value={email}
@@ -56,13 +79,13 @@ function Features() {
                 onChange={(e) => {
                   handleEmailChange(e);
                 }}
-                className="inline-flex items-center justify-center px-5 py-3 border focus:outline-none border-transparent text-base font-medium rounded-md text-gray-400 bg-white"
+                className="w-full items-center justify-center px-5 py-3 border focus:outline-none border-transparent text-base font-medium rounded-md text-gray-400 bg-white"
               />
             </div>
-            <div className="ml-3 inline-flex rounded-md shadow">
+            <div className="mt-3 rounded-md">
               <button
                 onClick={submit}
-                className="inline-flex items-center justify-center px-5 py-3 focus:outline-none border border-transparent text-base font-medium rounded-md bg-indigo-600 text-white hover:bg-indigo-500"
+                className=" items-center w-full justify-center shadow px-5 py-3 focus:outline-none border border-transparent text-base font-medium rounded-md bg-red-600 text-white hover:bg-red-500"
               >
                 Subscribe
               </button>

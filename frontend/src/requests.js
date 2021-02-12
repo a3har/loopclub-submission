@@ -8,8 +8,8 @@ const instance = axios.create({
 });
 
 class request {
-  createSubscription(email) {
-    const data = { email: email };
+  createSubscription(email, age) {
+    const data = { email: email, age: age };
     return instance.post("subscription-create/", data);
   }
 }
